@@ -19,13 +19,38 @@ def function(a0, a1, a2, a3, a4, x):
     return(pow(x, 4)*a4 + pow(x, 3)*a3 + pow(x, 2)*a2 + a1*x + a0)
 
 def calc_bisection(a0, a1, a2, a3, a4, n):
-    print("bisection calc")
-
-def calc_newton(a0, a1, a2, a3, a4, n):
-    print("bisection calc")
+    eps = 10 **(-n)
+    a = 0
+    b = 1
+    x = (a + b) / 2
+    if (function(a0, a1, a2, a3, a4, 0) * function(a0, a1, a2, a3, a4, 1) < 0):
+        while (abs(function(a0, a1, a2, a3, a4, x)) >= eps):
+            x = (a + b) / 2
+            if function(a0, a1, a2, a3, a4, x) * function(a0, a1, a2, a3, a4 ,a) > 0:
+                a = x
+            if function(a0, a1, a2, a3, a4, x) * function(a0, a1, a2, a3, a4, b) > 0:
+                b = x
+            print("x = ",x)
 
 def calc_secant(a0, a1, a2, a3, a4, n):
-    print("bisection calc")
+    eps = 10 **(-n)
+    a = 0
+    b = 1
+    x = 1
+    if (function(a0, a1, a2, a3, a4, 0) * function(a0, a1, a2, a3, a4, 1) < 0):
+        while (abs(function(a0, a1, a2, a3, a4, x)) >= eps):
+            x = (a * function(a0, a1, a2, a3, a4, b) - b * function(a0, a1, a2, a3, a4, a)) / (function(a0, a1, a2, a3, a4, b) - function(a0, a1, a2, a3, a4, a))
+            if (function(a0, a1, a2, a3, a4, x) * function(a0, a1, a2, a3, a4, a) > 0):
+                a = x
+            if (function(a0, a1, a2, a3, a4, x) * function(a0, a1, a2, a3, a4, b) > 0):
+                b = x
+            print("x = ", x)
+
+def calc_newton(a0, a1, a2, a3, a4, n):
+    eps = 10 **(-n)
+    a = 0
+    b = 1
+    x = 2
 
 def main():
     if len(sys.argv) == 2 and sys.argv[1] == "-h":
