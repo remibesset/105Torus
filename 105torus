@@ -1,0 +1,53 @@
+#!/usr/bin/python3
+
+from math import *
+import sys
+
+def helper():
+    print("USAGE")
+    print("\t./105torus opt a0 a1 a2 a3 a4 n\n")
+    print("DESCRIPTION")
+    print("\topt \t\tmethod option:\n")
+    print("\t\t1 for the bisection method\n")
+    print("\t\t2 for Newton’s mehod")
+    print("\t\t3 for the secant method")
+    print("\ta[0-4] \tcoefficients of the equation")
+    print("\tn \tprecision (the application of the polynomial to the solution should")
+    print("\t\t\tbe smaller than 10ˆ-n)")
+
+def function(a0, a1, a2, a3, a4, x):
+    return(pow(x, 4)*a4 + pow(x, 3)*a3 + pow(x, 2)*a2 + a1*x + a0)
+
+def calc_bisection(a0, a1, a2, a3, a4, n):
+    print("bisection calc")
+
+def calc_newton(a0, a1, a2, a3, a4, n):
+    print("bisection calc")
+
+def calc_secant(a0, a1, a2, a3, a4, n):
+    print("bisection calc")
+
+def main():
+    if len(sys.argv) == 2 and sys.argv[1] == "-h":
+        helper()
+        exit(0)
+    if len(sys.argv) != 8:
+        exit(84)
+    opt = int(sys.argv[1])
+    a0 = int(sys.argv[2])
+    a1 = int(sys.argv[3])
+    a2 = int(sys.argv[4])
+    a3 = int(sys.argv[5])
+    a4 = int(sys.argv[6])
+    n = int(sys.argv[7])
+    if (n < 0):
+        exit(84)
+    if opt == 1:
+        calc_bisection(a0, a1, a2, a3, a4, n)
+    elif opt == 2:
+        calc_newton(a0, a1, a2, a3, a4, n)
+    elif opt == 3:
+        calc_secant(a0, a1, a2, a3, a4, n)
+    else:
+        exit(84)
+main()
