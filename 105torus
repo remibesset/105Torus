@@ -48,9 +48,14 @@ def calc_secant(a0, a1, a2, a3, a4, n):
 
 def calc_newton(a0, a1, a2, a3, a4, n):
     eps = 10 **(-n)
-    a = 0
-    b = 1
-    x = 2
+    x = 0.5
+    print("x = ", x)
+    while (abs(function(a0, a1, a2, a3, a4, x)) >= eps):
+        x = x - function(a0, a1, a2, a3, a4, x) / fderive(a0, a1, a2, a3, a4, x)
+        print("x = ", x)
+
+def fderive(a0, a1, a2, a3, a4, x):
+    return (4 * a4 * pow(x, 3) + 3 * a3 * pow(x, 2) + 2 *  a2 * x + a1)
 
 def main():
     if len(sys.argv) == 2 and sys.argv[1] == "-h":
