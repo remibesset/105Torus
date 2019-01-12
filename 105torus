@@ -30,7 +30,10 @@ def calc_bisection(a0, a1, a2, a3, a4, n):
                 a = x
             if function(a0, a1, a2, a3, a4, x) * function(a0, a1, a2, a3, a4, b) > 0:
                 b = x
-            print("x = ",x)
+            if pow(10, n) * x % 1 == 0:
+                print("x =", x)
+            else:
+                print("x = %.*f" % (n, x))
 
 def calc_secant(a0, a1, a2, a3, a4, n):
     eps = 10 **(-n)
@@ -44,15 +47,26 @@ def calc_secant(a0, a1, a2, a3, a4, n):
                 a = x
             if (function(a0, a1, a2, a3, a4, x) * function(a0, a1, a2, a3, a4, b) > 0):
                 b = x
-            print("x = ", x)
+            if pow(10, n) * x % 1 == 0:
+                print("x =", x)
+            else:
+                print("x = %.*f" % (n, x))
 
 def calc_newton(a0, a1, a2, a3, a4, n):
     eps = 10 **(-n)
     x = 0.5
-    print("x = ", x)
+    count = 0
+    print("x =", x)
     while (abs(function(a0, a1, a2, a3, a4, x)) >= eps):
+        count += 1
         x = x - function(a0, a1, a2, a3, a4, x) / fderive(a0, a1, a2, a3, a4, x)
-        print("x = ", x)
+        if pow(10, n) * x % 1 == 0:
+            print("x =", x)
+        else:
+            print("x = %.*f" % (n, x))
+        if (count > 15):
+            print("No divergence")
+            exit(84)
 
 def fderive(a0, a1, a2, a3, a4, x):
     return (4 * a4 * pow(x, 3) + 3 * a3 * pow(x, 2) + 2 *  a2 * x + a1)
@@ -70,7 +84,7 @@ def main():
     a3 = int(sys.argv[5])
     a4 = int(sys.argv[6])
     n = int(sys.argv[7])
-    if (n < 0):
+    if n < 0 or (a1 == 0 and a2 ==0 and a3 == 0 and a4 == 0):
         exit(84)
     if opt == 1:
         calc_bisection(a0, a1, a2, a3, a4, n)
