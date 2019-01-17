@@ -6,14 +6,18 @@ import sys
 
 class Torus:
     def __init__(self):
-        self.opt = int(sys.argv[1])
-        self.a = [int(sys.argv[i]) for i in range(2, 7)]
-        self.n = int(sys.argv[7])
-        if (sum([self.a[i] for i in range(1, 5)]) == 0 or self.n < 0):
-            exit (84)
-        if self.opt <= 0 or self.opt > 3:
-            print("error")
-            exit (84)
+        try:
+            self.opt = int(sys.argv[1])
+            self.a = [int(sys.argv[i]) for i in range(2, 7)]
+            self.n = int(sys.argv[7])
+            if (sum([self.a[i] for i in range(1, 5)]) == 0 or self.n < 0 or self.n >=
+             309):
+                exit (84)
+            if self.opt <= 0 or self.opt > 3:
+                print("error")
+                exit (84)
+        except ValueError:
+            exit(84)
 
     def function(self, x):
         return sum([self.a[i] * pow(x, i) for i in range(0, len(self.a))])
@@ -21,17 +25,20 @@ class Torus:
     def fderiv(self, x):
         return sum([i * self.a[i] * pow(x, i - 1) for i in range (2, len(self.a))])
 
-    def display(self, s):
-        if pow(10, self.n) * s % 1 == 0:
+    def display(self, s, pres):
+        if pow(10, self.n) * s % 1 == 0 and pres == True:
             print("x = {0}".format(s))
         else:
+            pres = False
             print("x = %.*f" % (self.n, s))
+        return (pres)
 
     def bissection_method(self):
         a = 0
         b = 1
         c = 0
         s = 1
+        precision = True
         while abs(c - s) > pow(10, -self.n):
             s = c
             c = (a + b) / 2
@@ -39,16 +46,17 @@ class Torus:
                 b = c
             else:
                 a = c
-            self.display(c)
+            precision = self.display(c, precision)
 
     def newton_method(self):
         s = 0.5
         c = 0
         counter = 0
+        precision = True
         while abs(c - s) > pow(10, -self.n):
             c = s
             counter += 1
-            self.display(s)
+            precision = self.display(s, precision)
             s = s - (self.function(s) / self.fderiv(s))
             if (counter > 15):
                 print('\nError divergence')
@@ -57,11 +65,12 @@ class Torus:
     def secant_method(self):
         a = 0
         b = 1
+        precision = True
         while abs(a - b) > pow(10, -self.n):
             s = b - ((b - a) / (self.function(b) - self.function(a))) * self.function(b)
             a = b
             b = s
-            self.display(s)
+            precision = self.display(s, precision)
 
 def helper():
     print("USAGE\n\
