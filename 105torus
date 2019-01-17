@@ -63,7 +63,22 @@ class Torus:
             b = s
             self.display(s)
 
+def helper():
+    print("USAGE\n\
+\t./105torus opt a0 a1 a2 a3 a4 n\n\n\
+DESCRIPTION\n\
+\topt \tmethod option:\n\
+\t1 \t    for the bisection method\n\
+\t2 \t    for Newton’s method\n\
+\t3 \t    for the secant method\n\
+\ta[0-4] \tcoefficients of the equation\n\
+\tn \tprecision (the application of the polynomial to the solution should\n\
+\t\tbe smaller than 10ˆ-n)")
+
 if __name__ == '__main__':
+    if (len(sys.argv) == 2 and sys.argv[1] == "-h"):
+        helper()
+        exit(0)
     if (len(sys.argv) != 8):
         print("error")
         exit (84)
