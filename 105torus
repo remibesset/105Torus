@@ -1,101 +1,84 @@
 #!/usr/bin/python3
+# -*- conding utf -8 -8-
 
 from math import *
 import sys
 
-def helper():
-    print("USAGE")
-    print("\t./105torus opt a0 a1 a2 a3 a4 n\n")
-    print("DESCRIPTION")
-    print("\topt \t\tmethod option:\n")
-    print("\t\t1 for the bisection method\n")
-    print("\t\t2 for Newton’s mehod")
-    print("\t\t3 for the secant method")
-    print("\ta[0-4] \tcoefficients of the equation")
-    print("\tn \tprecision (the application of the polynomial to the solution should")
-    print("\t\t\tbe smaller than 10ˆ-n)")
+class Torus:
+    def __init__(self):
+        self.opt = int(sys.argv[1])
+        self.a0 = int(sys.argv[2])
+        self.a1 = int(sys.argv[3])
+        self.a2 = int(sys.argv[4])
+        self.a3 = int(sys.argv[5])
+        self.a4 = int(sys.argv[6])
+        self.n = int(sys.argv[7])
+        if (self.a1 == 0 and self.a2 ==0 and self.a3 == 0 and self.a4 == 0 or self.n < 0):
+            exit (84)
+        if self.opt <= 0 or self.opt > 3:
+            print("error")
+            exit (84)
 
-def function(a0, a1, a2, a3, a4, x):
-    return(pow(x, 4)*a4 + pow(x, 3)*a3 + pow(x, 2)*a2 + a1*x + a0)
+    def function(self, x):
+        return (self.a4 * pow(x, 4) + self.a3 * pow(x, 3) + self.a2 * pow(x, 2) + self.a1 * x  + self.a0)
 
-def calc_bisection(a0, a1, a2, a3, a4, n):
-    eps = 10 **(-n)
-    a = 0
-    b = 1
-    x = (a + b) / 2
-    if (function(a0, a1, a2, a3, a4, 0) * function(a0, a1, a2, a3, a4, 1) < 0):
-        while (abs(function(a0, a1, a2, a3, a4, x)) >= eps):
-            x = (a + b) / 2
-            if function(a0, a1, a2, a3, a4, x) * function(a0, a1, a2, a3, a4 ,a) > 0:
-                a = x
-            if function(a0, a1, a2, a3, a4, x) * function(a0, a1, a2, a3, a4, b) > 0:
-                b = x
-            if pow(10, n) * x % 1 == 0:
-                print("x =", x)
-            else:
-                print("x = %.*f" % (n, x))
+    def fderiv(self, x):
+        return (4 * self.a4 * pow(x, 3) + 3 * self.a3 * pow(x, 2) + 2 * self.a2 * x + self.a1)
 
-def calc_secant(a0, a1, a2, a3, a4, n):
-    eps = 10 **(-n)
-    a = 0
-    b = 1
-    x = 1
-    if (function(a0, a1, a2, a3, a4, 0) * function(a0, a1, a2, a3, a4, 1) < 0):
-        while (abs(function(a0, a1, a2, a3, a4, x)) >= eps):
-            x = (a * function(a0, a1, a2, a3, a4, b) - b * function(a0, a1, a2, a3, a4, a)) / (function(a0, a1, a2, a3, a4, b) - function(a0, a1, a2, a3, a4, a))
-            if (function(a0, a1, a2, a3, a4, x) * function(a0, a1, a2, a3, a4, a) > 0):
-                a = x
-            if (function(a0, a1, a2, a3, a4, x) * function(a0, a1, a2, a3, a4, b) > 0):
-                b = x
-            if pow(10, n) * x % 1 == 0:
-                print("x =", x)
-            else:
-                print("x = %.*f" % (n, x))
+    def geter_opt(self):
+        return self.opt
 
-def calc_newton(a0, a1, a2, a3, a4, n):
-    eps = 10 **(-n)
-    x = 0.5
-    count = 0
-    print("x =", x)
-    while (abs(function(a0, a1, a2, a3, a4, x)) >= eps):
-        count += 1
-        x = x - function(a0, a1, a2, a3, a4, x) / fderive(a0, a1, a2, a3, a4, x)
-        if pow(10, n) * x % 1 == 0:
-            print("x =", x)
+    def display(self, s):
+        if pow(10, self.n) * s % 1 == 0:
+            print("x =", s)
         else:
-            print("x = %.*f" % (n, x))
-        if (count > 15):
-            print("No divergence")
-            exit(84)
+            print("x = %.*f" % (self.n, s))
 
-def fderive(a0, a1, a2, a3, a4, x):
-    return (4 * a4 * pow(x, 3) + 3 * a3 * pow(x, 2) + 2 *  a2 * x + a1)
+    def bissection_method(self):
+        a = 0
+        b = 1
+        c = 0
+        s = 1
+        while abs(c - s) > pow(10, -self.n):
+            s = c
+            c = (a + b)/ 2
+            if self.function(a) * self.function(c) < 0:
+                b = c
+            else:
+                a = c
+            self.display(c)
 
-def main():
-    if len(sys.argv) == 2 and sys.argv[1] == "-h":
-        helper()
-        exit(0)
-    if len(sys.argv) != 8:
-        exit(84)
-    try:
-        opt = int(sys.argv[1])
-        a0 = int(sys.argv[2])
-        a1 = int(sys.argv[3])
-        a2 = int(sys.argv[4])
-        a3 = int(sys.argv[5])
-        a4 = int(sys.argv[6])
-        n = int(sys.argv[7])
-    except ValueError:
-        print("Wrong argument")
-        exit(84)
-    if n < 0 or (a1 == 0 and a2 == 0 and a3 == 0 and a4 == 0):
-        exit(84)
+    def newton_method(self):
+        s = 0.5
+        c = 0
+        counter = 0
+        while abs(c - s) > pow(10, -self.n):
+            c = s
+            counter += 1
+            self.display(s)
+            s = s - (self.function(s) / self.fderiv(s))
+            if (counter > 15):
+                print('\nError divergence')
+                exit(84)
+
+    def secant_method(self):
+        a = 0
+        b = 1
+        while abs(a - b) > pow(10, -self.n):
+            s = b - ((b - a) / (self.function(b) - self.function(a))) * self.function(b)
+            a = b
+            b = s
+            self.display(s)
+
+if __name__ == '__main__':
+    if (len(sys.argv) != 8):
+        print("error")
+        exit (84)
+    tor = Torus()
+    opt = tor.geter_opt()
     if opt == 1:
-        calc_bisection(a0, a1, a2, a3, a4, n)
+        tor.bissection_method()
     elif opt == 2:
-        calc_newton(a0, a1, a2, a3, a4, n)
+        tor.newton_method()
     elif opt == 3:
-        calc_secant(a0, a1, a2, a3, a4, n)
-    else:
-        exit(84)
-main()
+        tor.secant_method()
