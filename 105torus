@@ -77,14 +77,18 @@ def main():
         exit(0)
     if len(sys.argv) != 8:
         exit(84)
-    opt = int(sys.argv[1])
-    a0 = int(sys.argv[2])
-    a1 = int(sys.argv[3])
-    a2 = int(sys.argv[4])
-    a3 = int(sys.argv[5])
-    a4 = int(sys.argv[6])
-    n = int(sys.argv[7])
-    if n < 0 or (a1 == 0 and a2 ==0 and a3 == 0 and a4 == 0):
+    try:
+        opt = int(sys.argv[1])
+        a0 = int(sys.argv[2])
+        a1 = int(sys.argv[3])
+        a2 = int(sys.argv[4])
+        a3 = int(sys.argv[5])
+        a4 = int(sys.argv[6])
+        n = int(sys.argv[7])
+    except ValueError:
+        print("Wrong argument")
+        exit(84)
+    if n < 0 or (a1 == 0 and a2 == 0 and a3 == 0 and a4 == 0):
         exit(84)
     if opt == 1:
         calc_bisection(a0, a1, a2, a3, a4, n)
