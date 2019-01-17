@@ -7,30 +7,23 @@ import sys
 class Torus:
     def __init__(self):
         self.opt = int(sys.argv[1])
-        self.a0 = int(sys.argv[2])
-        self.a1 = int(sys.argv[3])
-        self.a2 = int(sys.argv[4])
-        self.a3 = int(sys.argv[5])
-        self.a4 = int(sys.argv[6])
+        self.a = [int(sys.argv[i]) for i in range(2, 7)]
         self.n = int(sys.argv[7])
-        if (self.a1 == 0 and self.a2 ==0 and self.a3 == 0 and self.a4 == 0 or self.n < 0):
+        if (sum([self.a[i] for i in range(1, 5)]) == 0 or self.n < 0):
             exit (84)
         if self.opt <= 0 or self.opt > 3:
             print("error")
             exit (84)
 
     def function(self, x):
-        return (self.a4 * pow(x, 4) + self.a3 * pow(x, 3) + self.a2 * pow(x, 2) + self.a1 * x  + self.a0)
+        return sum([self.a[i] * pow(x, i) for i in range(0, len(self.a))])
 
     def fderiv(self, x):
-        return (4 * self.a4 * pow(x, 3) + 3 * self.a3 * pow(x, 2) + 2 * self.a2 * x + self.a1)
-
-    def geter_opt(self):
-        return self.opt
+        return sum([i * self.a[i] * pow(x, i - 1) for i in range (2, len(self.a))])
 
     def display(self, s):
         if pow(10, self.n) * s % 1 == 0:
-            print("x =", s)
+            print("x = {0}".format(s))
         else:
             print("x = %.*f" % (self.n, s))
 
@@ -41,7 +34,7 @@ class Torus:
         s = 1
         while abs(c - s) > pow(10, -self.n):
             s = c
-            c = (a + b)/ 2
+            c = (a + b) / 2
             if self.function(a) * self.function(c) < 0:
                 b = c
             else:
@@ -75,7 +68,7 @@ if __name__ == '__main__':
         print("error")
         exit (84)
     tor = Torus()
-    opt = tor.geter_opt()
+    opt = tor.opt
     if opt == 1:
         tor.bissection_method()
     elif opt == 2:
